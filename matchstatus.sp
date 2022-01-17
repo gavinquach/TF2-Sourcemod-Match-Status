@@ -159,8 +159,11 @@ public Action GameOverBBall(Handle timer) {
 
 /* mp_tournament_restart hook (server reset when a cfg is executed) */
 public Action Event_TournamentRestart(int args) {
-	// timer to prevent text from getting buried by other lines in chat
-	CreateTimer(0.3, ResetText);
+	if (isLive) {
+		setNotLive();
+		// timer to prevent text from getting buried by other lines in chat
+		CreateTimer(0.3, ResetText);
+	}
 }
 
 public Action ResetText(Handle timer) {
