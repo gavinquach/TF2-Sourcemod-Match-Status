@@ -163,7 +163,31 @@ public Action Event_TournamentRestart(int args) {
 		setNotLive();
 		// timer to prevent text from getting buried by other lines in chat
 		CreateTimer(0.3, ResetText);
+	} else {
+		// print ruleset of config when a config is exec during warmup
+		// timer to prevent text from getting buried by other lines in chat
+		CreateTimer(0.3, RulesetText);
 	}
+}
+
+public Action RulesetText(Handle timer) {
+	ConVar winDiffConVar = FindConVar("mp_windifference");
+	int winDiff = GetConVarInt(winDiffConVar);
+
+	ConVar winLimitConVar = FindConVar("mp_winlimit");
+	int winLimit = GetConVarInt(winLimitConVar);
+
+	ConVar timeLimitConVar  = FindConVar("mp_timelimit");
+	int timeLimit = GetConVarInt(timeLimitConVar);
+
+	ConVar stopwatchModeConVar  = FindConVar("mp_tournament_stopwatch");
+	int stopwatchMode = GetConVarInt(stopwatchModeConVar);
+	CPrintToChatAll("{green}[SM] {default}Current config's win limit: {olive}%i{default}, win difference: {olive}%i{default}, time limit: {olive}%i", winLimit, winDiff, timeLimit);
+	
+	if (stopwatchMode == 0)
+		CPrintToChatAll("{green}[SM] {default}Stopwatch mode: No");
+	else
+		CPrintToChatAll("{green}[SM] {default}Stopwatch mode: Yes");
 }
 
 public Action ResetText(Handle timer) {
@@ -175,7 +199,7 @@ public void Event_RoundStart(Event event, const char[] name, bool dontBroadcast)
 	if (isLive) {
 		roundsPlayed++;
 		if (roundsPlayed == 1)
-			CPrintToChatAll("{green}[SM] {default}Match is LIVE! glhf!");
+			CPrintToChatAll("{green}[SM] {default}Match is LIVE! GLHF!");
 		else if (roundsPlayed > 1)
 			printScores(0);
 	}
